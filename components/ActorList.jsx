@@ -1,20 +1,21 @@
 import { FlatList, Image, StyleSheet, Dimensions, Pressable } from 'react-native'
 import React from 'react'
 import { useRouter } from 'expo-router'
-import jhonWick from '../assets/jhonWick.jpg' 
 
 const { width } = Dimensions.get('window');
 
 const ITEM_MARGIN = 8;
 
-const MovieList = ({ movies, itemWidth = width * 0.55, borderRadius=12}) => {
+const ActorList = ({ actors, itemWidth = width * 0.55, borderRadius = 12 }) => {
+
     const ITEM_SIZE = itemWidth + ITEM_MARGIN * 2;
 
     const router = useRouter()
 
+
     return (
         <FlatList
-            data={movies}
+            data={actors}
             keyExtractor={(item) => item.id}
             horizontal
             showsHorizontalScrollIndicator={false}
@@ -22,20 +23,21 @@ const MovieList = ({ movies, itemWidth = width * 0.55, borderRadius=12}) => {
             decelerationRate="fast"
             renderItem={({ item }) => (
                 <Pressable onPress={() => router.push({
-                    pathname: "/MovieDetails",
+                    pathname: "/ActorDetails",
                     params: {
                         id: item.id,
-                        title: item.title,
-                        year: item.year,
-                        rating: item.rating,
-                        genre: item.genre,
-                        poster: item.poster,
-                        description: item.description
+                        name: item.name,
+                        gender: item.gender,
+                        birthday: item.birthday,
+                        birthplace: item.birthplace,
+                        popularity: item.popularity,
+                        biography: item.biography,
+                        picture: item.picture
                     }
                 })} >
                     <Image
-                        source={{ uri: item.poster }}
-                        style={[styles.poster, { width: itemWidth, height: itemWidth * 1.5,borderRadius:borderRadius }]}
+                        source={{ uri: item.picture }}
+                        style={[styles.poster, { width: itemWidth, height: itemWidth * 1.5, borderRadius: borderRadius }]}
                     />
                 </Pressable>
             )}
@@ -43,7 +45,7 @@ const MovieList = ({ movies, itemWidth = width * 0.55, borderRadius=12}) => {
     )
 }
 
-export default MovieList
+export default ActorList
 
 const styles = StyleSheet.create({
     poster: {

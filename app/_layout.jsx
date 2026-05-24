@@ -15,9 +15,10 @@ const RootLayout = () => {
                 headerStyle: { backgroundColor: theme.navBackground },
                 headerTintColor: theme.title
             }}>
-                
-                <Stack.Screen name="index" options={{ headerShown:false }} />
-                 <Stack.Screen name="MovieDetails" options={{ headerShown:true }} />
+
+                <Stack.Screen name="index" options={{ headerShown: false }} />
+                <Stack.Screen name="MovieDetails" options={{ headerShown: true,title:"Details" }} />
+                <Stack.Screen name="ActorDetails" options={{ headerShown: true, title:"Details"  }} />
             </Stack>
         </>
 

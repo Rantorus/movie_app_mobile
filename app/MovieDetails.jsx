@@ -3,12 +3,17 @@ import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react'
 import ThemedView from '../components/ThemedView'
 import ThemedText from '../components/ThemedText'
+import Spacer from '../components/Spacer';
 import { useLocalSearchParams } from 'expo-router'
+
 import MovieList from '../components/MovieList';
 import { MOVIES } from '../constants/Movies'
-import Spacer from '../components/Spacer';
+
+import ActorList from '../components/ActorList';
+import {ACTORS} from "../constants/Actors"
+
+
 import { Colors } from '../constants/Colors';
-import jhonWick from '../assets/jhonWick.jpg'
 
 const MovieDetails = () => {
     const colorScheme = useColorScheme() ?? 'dark'; // null gelebilir, fallback ekle
@@ -60,7 +65,7 @@ const MovieDetails = () => {
                 <ThemedText style={styles.trendingTitle} title={true}>Top Cast</ThemedText>
                 <Spacer height={10} />
 
-                <MovieList borderRadius={100} movies={MOVIES}  isHeader={true} itemWidth={75} />
+                <ActorList borderRadius={100} actors={ACTORS} itemWidth={75} />
                 <Spacer height={20} />
 
                 <ThemedText style={styles.trendingTitle} title={true}>Similar Movies</ThemedText>
@@ -80,7 +85,7 @@ export default MovieDetails
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingBottom: 25
+        paddingBottom: 20
     },
     movieInfo: {
         fontSize: 18,

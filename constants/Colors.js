@@ -7,7 +7,7 @@ export const Colors = {
     title: "#ede8e1",
     background: "#1a1612",
     navBackground: "#141210",
-    iconColor: "#7a6f63",
+    iconColor: "#795c3a",
     iconColorFocused: "#ede8e1",
     uiBackground: "#241f1a",
   },
