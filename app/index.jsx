@@ -11,7 +11,6 @@ import Spacer from '../components/Spacer';
 import React from 'react'
 import MovieList from '../components/MovieList';
 import { MOVIES } from '../constants/Movies';
-
 const Home = () => {
     const colorScheme = useColorScheme()
     const theme = Colors[colorScheme] ?? Colors.light
@@ -21,6 +20,7 @@ const Home = () => {
     return (
         <ThemedView safe={true} style={styles.container}>
 
+            {/* top bar: MOVIES title, search button, left aligned bar icon */}
             <ThemedView style={styles.topBar} >
                 <AntDesign name="align-left" size={24} color={theme.iconColorFocused} />
                 <ThemedText style={styles.movieTitle} title={true}><Text style={{ color: "yellow" }}>M</Text>OVIES</ThemedText>
@@ -28,12 +28,16 @@ const Home = () => {
             </ThemedView>
             <ScrollView showsVerticalScrollIndicator={false}>
 
+                {/* trending movies */}
+
                 <ThemedText style={styles.trendingTitle} title={true}>Trending</ThemedText>
                 <Spacer height={10} />
 
                 <MovieList movies={MOVIES} />
 
                 <Spacer height={30} />
+
+                {/* upcoming movies */}
 
                 <View style={styles.upComingTitle}>
                     <ThemedText style={styles.trendingTitle} title={true}>Upcoming</ThemedText>
@@ -46,6 +50,8 @@ const Home = () => {
                 <MovieList movies={MOVIES} itemWidth={125} />
 
                 <Spacer height={30} />
+
+                {/* top rated movies */}
 
                 <View style={styles.upComingTitle}>
                     <ThemedText style={styles.trendingTitle} title={true}>Top Rated</ThemedText>

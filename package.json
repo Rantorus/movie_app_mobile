@@ -12,6 +12,7 @@
     "@expo/ngrok": "^4.1.0",
     "expo": "~55.0.26",
     "expo-constants": "~55.0.16",
+    "expo-linear-gradient": "~55.0.14",
     "expo-linking": "~55.0.15",
     "expo-router": "~55.0.16",
     "expo-status-bar": "~55.0.6",
