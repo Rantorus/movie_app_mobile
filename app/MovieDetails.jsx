@@ -88,8 +88,9 @@ const styles = StyleSheet.create({
         paddingBottom: 20
     },
     movieInfo: {
-        fontSize: 18,
-        textAlign: "center"
+        fontSize: 17,
+        textAlign: "center",
+        paddingHorizontal:20
     },
     posterContainer: {
         width: '100%',

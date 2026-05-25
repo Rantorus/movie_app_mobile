@@ -1,6 +1,7 @@
 import { FlatList, Image, StyleSheet, Dimensions, Pressable } from 'react-native'
 import React from 'react'
 import { useRouter } from 'expo-router'
+import ThemedText from './ThemedText';
 
 const { width } = Dimensions.get('window');
 
@@ -34,11 +35,15 @@ const ActorList = ({ actors, itemWidth = width * 0.55, borderRadius = 12 }) => {
                         biography: item.biography,
                         picture: item.picture
                     }
-                })} >
+                })}
+                    style={{ alignItems: "center", gap: 3 }}
+                >
                     <Image
                         source={{ uri: item.picture }}
                         style={[styles.poster, { width: itemWidth, height: itemWidth * 1.5, borderRadius: borderRadius }]}
                     />
+
+                    <ThemedText style={{ width: itemWidth, textAlign: "center" }} >{item.name}</ThemedText>
                 </Pressable>
             )}
         />

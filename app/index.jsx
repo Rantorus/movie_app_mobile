@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, Text, useColorScheme, View, Image, ScrollView } from 'react-native'
+import { FlatList, StyleSheet, Text, useColorScheme, View, Image, ScrollView, Pressable } from 'react-native'
 
 import { Ionicons } from "@expo/vector-icons"
 import FontAwesome from '@expo/vector-icons/FontAwesome';
@@ -11,11 +11,12 @@ import Spacer from '../components/Spacer';
 import React from 'react'
 import MovieList from '../components/MovieList';
 import { MOVIES } from '../constants/Movies';
+import { useRouter } from 'expo-router';
 const Home = () => {
     const colorScheme = useColorScheme()
     const theme = Colors[colorScheme] ?? Colors.light
 
-
+    const router = useRouter()
 
     return (
         <ThemedView safe={true} style={styles.container}>
@@ -24,7 +25,9 @@ const Home = () => {
             <ThemedView style={styles.topBar} >
                 <AntDesign name="align-left" size={24} color={theme.iconColorFocused} />
                 <ThemedText style={styles.movieTitle} title={true}><Text style={{ color: "yellow" }}>M</Text>OVIES</ThemedText>
+                <Pressable onPress={() => router.push("/SearchPage")}>
                 <FontAwesome name="search" size={24} color={theme.iconColorFocused} />
+                </Pressable>
             </ThemedView>
             <ScrollView showsVerticalScrollIndicator={false}>
 

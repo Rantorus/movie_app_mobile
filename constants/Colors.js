@@ -9,7 +9,7 @@ export const Colors = {
     navBackground: "#141210",
     iconColor: "#795c3a",
     iconColorFocused: "#ede8e1",
-    uiBackground: "#241f1a",
+    uiBackground: "#6d5e4f",
   },
 
   light: {

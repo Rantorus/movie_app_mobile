@@ -19,6 +19,7 @@ const RootLayout = () => {
                 <Stack.Screen name="index" options={{ headerShown: false }} />
                 <Stack.Screen name="MovieDetails" options={{ headerShown: true,title:"Details" }} />
                 <Stack.Screen name="ActorDetails" options={{ headerShown: true, title:"Details"  }} />
+                <Stack.Screen name="SearchPage" options={{ headerShown: true, title:"Search"  }} />
             </Stack>
         </>
 
