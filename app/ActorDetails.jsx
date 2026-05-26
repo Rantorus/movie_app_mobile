@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, View, ScrollView, Dimensions, useColorScheme } from 'react-native'
+import { Image, StyleSheet, Text, View, ScrollView, Dimensions, useColorScheme, ActivityIndicator } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react'
 import ThemedView from '../components/ThemedView'
@@ -15,38 +15,51 @@ import { ACTORS } from "../constants/Actors"
 
 import { Colors } from '../constants/Colors';
 
+import { useActorDetails } from '../hooks/useMovies'
+import { IMAGE_BASE_URL } from '../services/tmdb'
+
 
 
 const MovieDetails = () => {
     const colorScheme = useColorScheme() ?? 'dark'; 
     const theme = Colors[colorScheme] ?? Colors.light
 
-    const { id, name, gender, birthday, birthplace, popularity, biography, picture } = useLocalSearchParams()
+     const { id } = useLocalSearchParams()
+    const { actor, movies, loading } = useActorDetails(id)
 
-    const actor = ACTORS.find(m => m.id === id)
+    if (loading) {
+        return (
+            <ThemedView style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
+                <ActivityIndicator size="large" color="yellow" />
+            </ThemedView>
+        )
+    }
+
+    if (!actor) return null
+
+    const gender = actor.gender === 1 ? 'Female' : actor.gender === 2 ? 'Male' : 'Unknown'
+
     return (
         <ThemedView style={styles.container}>
-
-
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ alignItems: 'center' }}>
+
                 <View style={styles.posterContainer}>
                     <Image
-                        source={{ uri: actor.picture }}
+                        source={{ uri: `${IMAGE_BASE_URL}${actor.profile_path}` }}
                         style={styles.poster}
                     />
                 </View>
 
                 <Spacer height={20} />
-                <ThemedText title={true} style={styles.nameTitle}>{name}</ThemedText>
+                <ThemedText title={true} style={styles.nameTitle}>{actor.name}</ThemedText>
                 <Spacer height={5} />
-                <ThemedText>{birthplace}</ThemedText>
+                <ThemedText>{actor.place_of_birth}</ThemedText>
                 <Spacer height={25} />
-
 
                 <View style={[{ backgroundColor: theme.iconColor }, styles.infoCard]}>
                     <View style={styles.infoItem}>
                         <ThemedText style={styles.infoLabel}>Gender</ThemedText>
-                        <ThemedText style={styles.infoValue}>{actor.gender}</ThemedText>
+                        <ThemedText style={styles.infoValue}>{gender}</ThemedText>
                     </View>
                     <View style={styles.divider} />
                     <View style={styles.infoItem}>
@@ -56,37 +69,29 @@ const MovieDetails = () => {
                     <View style={styles.divider} />
                     <View style={styles.infoItem}>
                         <ThemedText style={styles.infoLabel}>Known for</ThemedText>
-                        <ThemedText style={styles.infoValue}>Acting</ThemedText>
+                        <ThemedText style={styles.infoValue}>{actor.known_for_department}</ThemedText>
                     </View>
                     <View style={styles.divider} />
                     <View style={styles.infoItem}>
                         <ThemedText style={styles.infoLabel}>Popularity</ThemedText>
-                        <ThemedText style={styles.infoValue}>{actor.popularity}</ThemedText>
+                        <ThemedText style={styles.infoValue}>{actor.popularity?.toFixed(1)}</ThemedText>
                     </View>
                 </View>
 
                 <Spacer height={20} />
-                
-                <ThemedText title={true} style={{fontSize:18}}>Biography</ThemedText>
+                <ThemedText title={true} style={{ fontSize: 18 }}>Biography</ThemedText>
                 <Spacer height={5} />
-                <ThemedText style={styles.bio}>{biography}</ThemedText>
+                <ThemedText style={styles.bio}>{actor.biography}</ThemedText>
 
                 <Spacer height={25} />
 
                 <View>
-                <ThemedText style={styles.moviesTitle} title={true}>Movies</ThemedText>
-                <Spacer height={10} />
-                <MovieList movies={MOVIES} itemWidth={125} />
-
+                    <ThemedText style={styles.moviesTitle} title={true}>Movies</ThemedText>
+                    <Spacer height={10} />
+                    <MovieList movies={movies} itemWidth={125} />
                 </View>
 
-                
-
-
-
             </ScrollView>
-
-
         </ThemedView>
     )
 }

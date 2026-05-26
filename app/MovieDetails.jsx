@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, View, ScrollView, Dimensions, useColorScheme } from 'react-native'
+import { Image, StyleSheet, Text, View, ScrollView, Dimensions, useColorScheme, ActivityIndicator } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react'
 import ThemedView from '../components/ThemedView'
@@ -10,72 +10,78 @@ import MovieList from '../components/MovieList';
 import { MOVIES } from '../constants/Movies'
 
 import ActorList from '../components/ActorList';
-import {ACTORS} from "../constants/Actors"
+import { ACTORS } from "../constants/Actors"
 
 
 import { Colors } from '../constants/Colors';
+
+import { useMovieDetails } from '../hooks/useMovies';
 
 const MovieDetails = () => {
     const colorScheme = useColorScheme() ?? 'dark'; // null gelebilir, fallback ekle
     const bg = Colors[colorScheme].background;
 
-    const { id, title, year, rating, genre, poster, description } = useLocalSearchParams()
+    const { id } = useLocalSearchParams()
 
-    const movie = MOVIES.find(m => m.id === id)
+    const { details, cast, similar, loading } = useMovieDetails(id)
+
+    if (loading) {
+        return (
+            <ThemedView style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
+                <ActivityIndicator size="large" color="yellow" />
+            </ThemedView>
+        )
+    }
+
+     if (!details) return null
+
+    const genre = details.genres?.map(g => g.name).join(' • ')
+    const year = details.release_date?.split('-')[0]
+
     return (
         <ThemedView style={styles.container}>
-
-
             <ScrollView showsVerticalScrollIndicator={false}>
+
                 <View style={styles.posterContainer}>
                     <Image
-                        source={{ uri: movie.poster }}
+                        source={{ uri: `https://image.tmdb.org/t/p/w500${details.poster_path}` }}
                         style={styles.poster}
                     />
                     <LinearGradient
                         colors={[
                             'transparent',
-                            `${bg}4D`,   // %30 opaklık
-                            `${bg}80`,   // %50
-                            `${bg}B3`,   // %70
-                            `${bg}E6`,   // %90
-                            `${bg}FF`,   // %100
+                            `${bg}4D`,
+                            `${bg}80`,
+                            `${bg}B3`,
+                            `${bg}E6`,
+                            `${bg}FF`,
                         ]}
                         style={styles.gradient}
                     >
-                        <ThemedText title={true} style={styles.title}>{movie.title}</ThemedText>
+                        <ThemedText title={true} style={styles.title}>{details.title}</ThemedText>
                     </LinearGradient>
                 </View>
+
                 <Spacer height={15} />
-
-
-
-                <ThemedText style={styles.movieInfo} >Relased: {year}</ThemedText>
+                <ThemedText style={styles.movieInfo}>Released: {year}</ThemedText>
                 <Spacer height={5} />
-
-                <ThemedText style={styles.movieInfo} >IMDB: {rating}</ThemedText>
+                <ThemedText style={styles.movieInfo}>IMDB: {details.vote_average?.toFixed(1)}</ThemedText>
                 <Spacer height={5} />
-
-                <ThemedText style={styles.movieInfo} >{genre}</ThemedText>
+                <ThemedText style={styles.movieInfo}>{genre}</ThemedText>
                 <Spacer height={15} />
-
-                <ThemedText style={styles.movieInfo} >{description}</ThemedText>
+                <ThemedText style={styles.movieInfo}>{details.overview}</ThemedText>
                 <Spacer height={20} />
 
                 <ThemedText style={styles.trendingTitle} title={true}>Top Cast</ThemedText>
                 <Spacer height={10} />
-
-                <ActorList borderRadius={100} actors={ACTORS} itemWidth={75} />
+                <ActorList borderRadius={100} actors={cast} itemWidth={75} />
                 <Spacer height={20} />
 
                 <ThemedText style={styles.trendingTitle} title={true}>Similar Movies</ThemedText>
                 <Spacer height={10} />
-                <MovieList movies={MOVIES} itemWidth={125} />
-
+                <MovieList movies={similar} itemWidth={125} />
 
             </ScrollView>
-
-
         </ThemedView>
     )
 }
@@ -90,7 +96,7 @@ const styles = StyleSheet.create({
     movieInfo: {
         fontSize: 17,
         textAlign: "center",
-        paddingHorizontal:20
+        paddingHorizontal: 20
     },
     posterContainer: {
         width: '100%',

@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, Text, useColorScheme, View, Image, ScrollView, Pressable } from 'react-native'
+import { FlatList, StyleSheet, Text, useColorScheme, View, Image, ScrollView, Pressable, ActivityIndicator } from 'react-native'
 
 import { Ionicons } from "@expo/vector-icons"
 import FontAwesome from '@expo/vector-icons/FontAwesome';
@@ -8,67 +8,62 @@ import ThemedView from '../components/ThemedView'
 import ThemedText from '../components/ThemedText'
 import { Colors } from '../constants/Colors'
 import Spacer from '../components/Spacer';
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import MovieList from '../components/MovieList';
 import { MOVIES } from '../constants/Movies';
 import { useRouter } from 'expo-router';
+import { useMovies } from '../hooks/useMovies'
+
 const Home = () => {
     const colorScheme = useColorScheme()
     const theme = Colors[colorScheme] ?? Colors.light
-
     const router = useRouter()
+
+      const { trending, upcoming, topRated, loading } = useMovies()
+
+     if (loading) {
+        return (
+            <ThemedView safe={true} style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
+                <ActivityIndicator size="large" color="yellow" />
+            </ThemedView>
+        )
+    }
 
     return (
         <ThemedView safe={true} style={styles.container}>
-
-            {/* top bar: MOVIES title, search button, left aligned bar icon */}
-            <ThemedView style={styles.topBar} >
+            <ThemedView style={styles.topBar}>
                 <AntDesign name="align-left" size={24} color={theme.iconColorFocused} />
-                <ThemedText style={styles.movieTitle} title={true}><Text style={{ color: "yellow" }}>M</Text>OVIES</ThemedText>
+                <ThemedText style={styles.movieTitle} title={true}>
+                    <Text style={{ color: "yellow" }}>M</Text>OVIES
+                </ThemedText>
                 <Pressable onPress={() => router.push("/SearchPage")}>
-                <FontAwesome name="search" size={24} color={theme.iconColorFocused} />
+                    <FontAwesome name="search" size={24} color={theme.iconColorFocused} />
                 </Pressable>
             </ThemedView>
-            <ScrollView showsVerticalScrollIndicator={false}>
 
-                {/* trending movies */}
+            <ScrollView showsVerticalScrollIndicator={false}>
 
                 <ThemedText style={styles.trendingTitle} title={true}>Trending</ThemedText>
                 <Spacer height={10} />
-
-                <MovieList movies={MOVIES} />
-
+                <MovieList movies={trending} />
                 <Spacer height={30} />
-
-                {/* upcoming movies */}
 
                 <View style={styles.upComingTitle}>
                     <ThemedText style={styles.trendingTitle} title={true}>Upcoming</ThemedText>
                     <ThemedText style={[styles.trendingTitle, { color: "yellow" }]} title={true}>See All</ThemedText>
                 </View>
-
                 <Spacer height={10} />
-
-
-                <MovieList movies={MOVIES} itemWidth={125} />
-
+                <MovieList movies={upcoming} itemWidth={125} />
                 <Spacer height={30} />
-
-                {/* top rated movies */}
 
                 <View style={styles.upComingTitle}>
                     <ThemedText style={styles.trendingTitle} title={true}>Top Rated</ThemedText>
                     <ThemedText style={[styles.trendingTitle, { color: "yellow" }]} title={true}>See All</ThemedText>
                 </View>
-
                 <Spacer height={10} />
-
-
-                <MovieList movies={MOVIES} itemWidth={125} />
-
+                <MovieList movies={topRated} itemWidth={125} />
 
             </ScrollView>
-
         </ThemedView>
     )
 }
@@ -82,7 +77,7 @@ const styles = StyleSheet.create({
         //justifyContent: "center",
         //alignItems: "cennter",
         paddingHorizontal: 15,
-        paddingBottom:20
+        paddingBottom: 20
 
     },
     topBar: {
