@@ -1,6 +1,6 @@
 // hooks/useMovies.js
 import { useState, useEffect } from 'react'
-import { getTrending, getUpcoming, getTopRated, getPopularMovies, IMAGE_BASE_URL, getMovieDetails, getMovieCredits, getSimilarMovies, getActorDetails, getActorMovies } from '../services/tmdb'
+import { getTrending, getUpcoming, getTopRated, getPopularMovies, IMAGE_BASE_URL, getMovieDetails, getMovieCredits, getSimilarMovies, getActorDetails, getActorMovies, searchMovies } from '../services/tmdb'
 
 export const formatMovies = (movies = []) =>
     movies.map(movie => ({
@@ -110,4 +110,34 @@ export const useActorDetails = (actorId) => {
     }, [actorId])
 
     return { actor, movies, loading, error }
+}
+
+export const useSearch = () => {
+    const [query, setQuery] = useState('')
+    const [results, setResults] = useState([])
+    const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        if (!query.trim()) {
+            setResults([])
+            return
+        }
+
+        const timer = setTimeout(async () => {
+            setLoading(true)
+            try {
+                const data = await searchMovies(query)
+                setResults(formatMovies(data))
+            } catch (err) {
+                console.error('Arama hatası:', err)
+            } finally {
+                setLoading(false)
+            }
+        }, 500) // 500ms bekle
+
+        return () => clearTimeout(timer) // her yeni karakter önceki timer'ı iptal eder
+
+    }, [query])
+
+    return { query, setQuery, results, loading }
 }
