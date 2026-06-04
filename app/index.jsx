@@ -10,7 +10,6 @@ import { Colors } from '../constants/Colors'
 import Spacer from '../components/Spacer';
 import React, { useEffect, useState } from 'react'
 import MovieList from '../components/MovieList';
-import { MOVIES } from '../constants/Movies';
 import { useRouter } from 'expo-router';
 import { useMovies } from '../hooks/useMovies'
 
@@ -19,9 +18,11 @@ const Home = () => {
     const theme = Colors[colorScheme] ?? Colors.light
     const router = useRouter()
 
-      const { trending, upcoming, topRated, loading } = useMovies()
+    // Fetch trending, upcoming, and top rated movies from TMDB API via custom hook
+    const { trending, upcoming, topRated, loading } = useMovies()
 
-     if (loading) {
+    // Show loading spinner while data is being fetched
+    if (loading) {
         return (
             <ThemedView safe={true} style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
                 <ActivityIndicator size="large" color="yellow" />
@@ -29,8 +30,10 @@ const Home = () => {
         )
     }
 
+    //data has just fetched
     return (
         <ThemedView safe={true} style={styles.container}>
+            {/* top bar items */}
             <ThemedView style={styles.topBar}>
                 <AntDesign name="align-left" size={24} color={theme.iconColorFocused} />
                 <ThemedText style={styles.movieTitle} title={true}>
@@ -43,11 +46,13 @@ const Home = () => {
 
             <ScrollView showsVerticalScrollIndicator={false}>
 
+                {/* Trending movies section */}
                 <ThemedText style={styles.trendingTitle} title={true}>Trending</ThemedText>
                 <Spacer height={10} />
                 <MovieList movies={trending} />
                 <Spacer height={30} />
 
+                {/* Upcoming movies section */}
                 <View style={styles.upComingTitle}>
                     <ThemedText style={styles.trendingTitle} title={true}>Upcoming</ThemedText>
                     <ThemedText style={[styles.trendingTitle, { color: "yellow" }]} title={true}>See All</ThemedText>
@@ -55,7 +60,8 @@ const Home = () => {
                 <Spacer height={10} />
                 <MovieList movies={upcoming} itemWidth={125} />
                 <Spacer height={30} />
-
+                
+                {/* Top Rated movies section */}
                 <View style={styles.upComingTitle}>
                     <ThemedText style={styles.trendingTitle} title={true}>Top Rated</ThemedText>
                     <ThemedText style={[styles.trendingTitle, { color: "yellow" }]} title={true}>See All</ThemedText>
@@ -74,8 +80,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignContent: "center",
-        //justifyContent: "center",
-        //alignItems: "cennter",
         paddingHorizontal: 15,
         paddingBottom: 20
 

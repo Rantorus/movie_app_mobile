@@ -7,10 +7,8 @@ import Spacer from '../components/Spacer';
 import { useLocalSearchParams } from 'expo-router'
 
 import MovieList from '../components/MovieList';
-import { MOVIES } from '../constants/Movies'
 
 import ActorList from '../components/ActorList';
-import { ACTORS } from "../constants/Actors"
 
 
 import { Colors } from '../constants/Colors';
@@ -28,7 +26,7 @@ const MovieDetails = () => {
     const { actor, movies, loading } = useActorDetails(id)
 
     if (loading) {
-        return (
+        return ( 
             <ThemedView style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
                 <ActivityIndicator size="large" color="yellow" />
             </ThemedView>

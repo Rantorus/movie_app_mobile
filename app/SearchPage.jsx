@@ -6,7 +6,6 @@ import { Colors } from '../constants/Colors'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Link, useRouter } from 'expo-router'
 import MovieList from '../components/MovieList'
-import { MOVIES } from '../constants/Movies'
 import { useSearch } from '../hooks/useMovies'
 
 

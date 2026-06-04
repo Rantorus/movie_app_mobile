@@ -1,4 +1,3 @@
-// hooks/useMovies.js
 import { useState, useEffect } from 'react'
 import { getTrending, getUpcoming, getTopRated, getPopularMovies, IMAGE_BASE_URL, getMovieDetails, getMovieCredits, getSimilarMovies, getActorDetails, getActorMovies, searchMovies } from '../services/tmdb'
 
@@ -71,7 +70,7 @@ export const useMovieDetails = (movieId) => {
                 })))
                 setSimilar(formatMovies(similarData))
             } catch (err) {
-                console.error('Film detay hatası:', err)
+                console.error('Movie details error:', err)
                 setError(err)
             } finally {
                 setLoading(false)
@@ -129,13 +128,13 @@ export const useSearch = () => {
                 const data = await searchMovies(query)
                 setResults(formatMovies(data))
             } catch (err) {
-                console.error('Arama hatası:', err)
+                console.error('Search Error:', err)
             } finally {
                 setLoading(false)
             }
-        }, 500) // 500ms bekle
+        }, 500) // wait 500ms
 
-        return () => clearTimeout(timer) // her yeni karakter önceki timer'ı iptal eder
+        return () => clearTimeout(timer) 
 
     }, [query])
 

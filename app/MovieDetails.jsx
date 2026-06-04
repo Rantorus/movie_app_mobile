@@ -7,10 +7,8 @@ import Spacer from '../components/Spacer';
 import { useLocalSearchParams } from 'expo-router'
 
 import MovieList from '../components/MovieList';
-import { MOVIES } from '../constants/Movies'
 
 import ActorList from '../components/ActorList';
-import { ACTORS } from "../constants/Actors"
 
 
 import { Colors } from '../constants/Colors';
@@ -18,7 +16,7 @@ import { Colors } from '../constants/Colors';
 import { useMovieDetails } from '../hooks/useMovies';
 
 const MovieDetails = () => {
-    const colorScheme = useColorScheme() ?? 'dark'; // null gelebilir, fallback ekle
+    const colorScheme = useColorScheme() ?? 'dark'; 
     const bg = Colors[colorScheme].background;
 
     const { id } = useLocalSearchParams()
